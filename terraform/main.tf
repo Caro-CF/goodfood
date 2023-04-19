@@ -37,7 +37,7 @@ resource "azurerm_service_plan" "plan-goodfood" {
   resource_group_name = azurerm_resource_group.rg-goodfood.name
   location            = azurerm_resource_group.rg-goodfood.location
   os_type             = "Linux"
-  sku_name            = "Free"
+  sku_name            = "F1"
 }
 
 #Web Appp Linux
