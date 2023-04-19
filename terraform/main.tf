@@ -47,7 +47,9 @@ resource "azurerm_linux_web_app" "webapp-hello" {
   location            = azurerm_service_plan.plan-goodfood.location
   service_plan_id     = azurerm_service_plan.plan-goodfood.id
 
-  site_config {}
+  site_config {
+    always_on = false
+  }
 }
 
 resource "azurerm_linux_web_app" "webapp-world" {
@@ -56,5 +58,7 @@ resource "azurerm_linux_web_app" "webapp-world" {
   location            = azurerm_service_plan.plan-goodfood.location
   service_plan_id     = azurerm_service_plan.plan-goodfood.id
 
-  site_config {}
+  site_config {
+    always_on = false
+  }
 }
