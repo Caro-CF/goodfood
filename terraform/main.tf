@@ -25,7 +25,36 @@ provider "azurerm" {
 # ressource azure
 ###############
 
+# Resource Group
 resource "azurerm_resource_group" "rg-goodfood" { # ne pas changer l'identifiant, sinon remplacement des ressources
   name     = "rg-cfo-${var.project_name}"
   location = var.location
+}
+
+#App Service Plan
+resource "azurerm_service_plan" "plan-goodfood" {
+  name                = "plan-cfo-${var.project_name}"
+  resource_group_name = azurerm_resource_group.rg-goodfood.name
+  location            = azurerm_resource_group.rg-goodfood.location
+  os_type             = "Linux"
+  sku_name            = "Free"
+}
+
+#Web Appp Linux
+resource "azurerm_linux_web_app" "webapp-hello" {
+  name                = "web-hello-${var.project_name}"
+  resource_group_name = azurerm_resource_group.rg-goodfood.name
+  location            = azurerm_service_plan.plan-goodfood.location
+  service_plan_id     = azurerm_service_plan.plan-goodfood.id
+
+  site_config {}
+}
+
+resource "azurerm_linux_web_app" "webapp-world" {
+  name                = "web-world-${var.project_name}"
+  resource_group_name = azurerm_resource_group.rg-goodfood.name
+  location            = azurerm_service_plan.plan-goodfood.location
+  service_plan_id     = azurerm_service_plan.plan-goodfood.id
+
+  site_config {}
 }
