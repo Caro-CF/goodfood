@@ -10,6 +10,7 @@ permissions:
 jobs: 
   deploy-infra:
     runs-on: ubuntu-latest
+
     steps:
     - name: Log into Azure
       uses: azure/login@v1
@@ -18,9 +19,9 @@ jobs:
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
-    - name: Create Storage account
-      uses: azure/CLI@v1
-      with:
-        azcliversion: 2.30.0
-        inlineScript: |
-          az storage account create --name stcarocjfprd02 --resource-group rg-github-actions --location francecentral --sku Standard_LRS
+    - name: Deploy infrastructure with Terraform
+      shell: bash
+      run: |
+        cd terraform
+        terraform init
+        terraform apply -var-file='./goodfood.tfvars' -auto-approve
