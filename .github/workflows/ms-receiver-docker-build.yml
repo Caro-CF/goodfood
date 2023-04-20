@@ -1,0 +1,26 @@
+name: Docker build - ms-receiver
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+    paths:
+      - ./microservices/ms-receiver/**
+
+
+jobs: 
+  deploy-infra:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Build & Push Docker image
+      shell: bash
+      working-directory: ./microservices/ms-receiver
+      run: |
+        docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+        docker build . -t lunafire/ms-receiver:latest
+        docker push lunafire/ms-receiver:latest

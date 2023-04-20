@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ms-sender
+  name: ms-sender
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-sender
+  template:
+    metadata:
+      labels:
+        app: ms-sender
+    spec:
+      containers:
+        - name: ms-sender
+          image: lunafire/ms-sender:latest
+          resources: {}
+      restartPolicy: Always
