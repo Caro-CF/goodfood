@@ -62,3 +62,27 @@ resource "azurerm_linux_web_app" "webapp-world" {
     always_on = false
   }
 }
+
+# #RabbitMQ : Container app
+resource "azurerm_container_group" "rabbit-mq" {
+  name                = "aci-mq-${var.project_name}"
+  resource_group_name = azurerm_resource_group.rg-goodfood.name
+  location            = azurerm_service_plan.plan-goodfood.location
+  ip_address_type     = "None"
+  dns_name_label      = "aci-mq-${var.project_name}"
+  os_type             = "Linux"
+  exposed_port        = []
+
+  container {
+    name   = "rabbitmq"
+    image  = "rabbitmq:3-management"
+    cpu    = "0.5"
+    memory = "1.5"
+
+    environment_variables = {
+      "RABBITMQ_DEFAULT_USER" = "${var.RABBITMQ_DEFAULT_USER}",
+      "RABBITMQ_DEFAULT_PASS" = "${var.RABBITMQ_DEFAULT_PASS}"
+    }
+  }
+}
+
