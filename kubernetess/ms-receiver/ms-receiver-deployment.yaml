@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ms-receiver
+  name: ms-receiver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-receiver
+  template:
+    metadata:
+      labels:
+        app: ms-receiver
+    spec:
+      containers:
+        - name: ms-receiver
+          image: lunafire/ms-receiver:latest
+          resources: {}
+      restartPolicy: Always
