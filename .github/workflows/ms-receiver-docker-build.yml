@@ -2,11 +2,20 @@ name: Docker build - ms-receiver
 
 on:
   workflow_dispatch:
+
   push:
     branches:
       - dev
     paths:
-      - ./microservices/ms-receiver/**
+      - microservices/ms-receiver/**
+      - .github/workflows/ms-receiver-docker-build.yml
+  
+  pull_request:
+    branches:
+    - dev
+    paths:
+      - microservices/ms-receiver/**
+      - .github/workflows/ms-receiver-docker-build.yml
 
 
 jobs: 

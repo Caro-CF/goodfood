@@ -2,11 +2,20 @@ name: Docker build - ms-sender
 
 on:
   workflow_dispatch:
+
   push:
     branches:
       - dev
     paths:
-      - ./microservices/ms-sender/**
+      - microservices/ms-sender/**
+      - .github/workflows/ms-sender-docker-build.yml
+  
+  pull_request:
+    branches:
+    - dev
+    paths:
+      - microservices/ms-sender/**
+      - .github/workflows/ms-sender-docker-build.yml
 
 
 jobs: 
