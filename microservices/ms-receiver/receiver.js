@@ -2,6 +2,7 @@
 
 var amqp = require('amqplib/callback_api');
 
+//add comment
 amqp.connect('amqp://rabbitmq', function (error0, connection) {
     if (error0) {
         throw error0;
