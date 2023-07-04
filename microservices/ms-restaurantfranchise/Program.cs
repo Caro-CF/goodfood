@@ -15,6 +15,9 @@ builder.Services.AddDbContext<RestaurantFranchiseContext>(options =>
         options.UseSqlServer(conStrBuilder.ConnectionString));
 
 builder.Services.AddScoped<IFranchiseService, FranchiseService>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IRestaurantTagService, RestaurantTagService>();
+builder.Services.AddScoped<ITagService, TagService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
