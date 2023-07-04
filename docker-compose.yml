@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  tyk:
+    image: docker.tyk.io/tyk-gateway/tyk-gateway:v4.3.3
+    ports:
+      - 8080:8080
+    volumes:
+      #- ./tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
+      - ./tyk/apps:/opt/tyk-gateway/apps
+      - ./tyk/middleware:/opt/tyk-gateway/middleware
+      - ./tyk/certs:/opt/tyk-gateway/certs
+    environment:
+      - TYK_GW_SECRET=key12345
+    depends_on:
+      # - receiver
+      # - sender
+      - redis
+      - catalog
+
+  redis:
+    image: redis:latest
+
+  # sender:
+  #   build: ./microservices/ms-sender
+  #   expose:
+  #     - 3000
+
+  # receiver:
+  #   build: ./microservices/ms-receiver
+  #   expose:
+  #     - 3000
+
+  #ajouter rabbitmq
+
+  catalog:
+    build: ./microservices/ms-catalog
+    expose:
+      - 3000
