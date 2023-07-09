@@ -1,5 +1,5 @@
 const config = {
-    server: 'localhost',
+    server: '172.21.0.3',
     port: 1433,
     user: 'sa',
     password: 'M@@LSIC€SI2024',
