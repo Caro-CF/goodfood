@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  sql-server:
+    container_name: catalog
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "P@ssword2023"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "15433:1433"

@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           Int                 @id @default(autoincrement())
+  name         String?             @unique @db.VarChar(50)
+  OrderProduct OrderProduct[]
+  ingredients  ProductIngredient[]
+}
+
+model OrderProduct {
+  id_order   Int
+  id_product Int
+  quantity   Int
+  product    Product @relation(fields: [id_product], references: [id])
+
+  @@id([id_order, id_product])
+  @@map("OrderProduct")
+}
+
+model Ingredient {
+  id        Int                  @id @default(autoincrement())
+  name      String               @unique
+  allergens IngredientAllergen[]
+  products  ProductIngredient[]
+  providers ProviderIngredient[]
+}
+
+model Allergen {
+  id          Int                  @id @default(autoincrement())
+  details     String               @unique @db.VarChar(50)
+  ingredients IngredientAllergen[]
+}
+
+model Provider {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique @db.VarChar(50)
+  line_1             String               @db.VarChar(100)
+  city               String               @db.VarChar(50)
+  postal_code        String               @db.VarChar(6)
+  country            String               @db.VarChar(50)
+  additional_details String?              @db.VarChar(100)
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  ingredients        ProviderIngredient[]
+}
+
+model IngredientAllergen {
+  id_ingredient Int
+  id_allergen   Int
+  allergen      Allergen   @relation(fields: [id_allergen], references: [id])
+  ingredient    Ingredient @relation(fields: [id_ingredient], references: [id])
+
+  @@id([id_ingredient, id_allergen])
+  @@map("IngredientAllergen")
+}
+
+model ProductIngredient {
+  id_product    Int
+  id_ingredient Int
+  ingredient    Ingredient @relation(fields: [id_ingredient], references: [id])
+  product       Product    @relation(fields: [id_product], references: [id])
+
+  @@id([id_product, id_ingredient])
+  @@map("ProductIngredient")
+}
+
+model ProviderIngredient {
+  id_provider   Int
+  id_ingredient Int
+  ingredient    Ingredient @relation(fields: [id_ingredient], references: [id])
+  provider      Provider   @relation(fields: [id_provider], references: [id])
+
+  @@id([id_provider, id_ingredient])
+  @@map("ProviderIngredient")
+}
