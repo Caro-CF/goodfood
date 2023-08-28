@@ -1,21 +1,18 @@
-import { Router } from 'express';
-import DeliveryController from './controllers/deliveryController.js';
-import StatusDeliveryController from './controllers/statusDeliveryController.js';
-import DeliveryService from './services/deliveryService.js';
-import StatusDeliveryService from './services/statusDeliveryService.js';
-import pkg from 'mssql';
-const { ConnectionPool } = pkg;
-import config from './dbConfig.js';
+const express = require('express');
+const Router = express.Router;
+const DeliveryController = require('./controllers/deliveryController.js');
+const StatusDeliveryController = require('./controllers/statusDeliveryController.js');
+const DeliveryService = require('./services/deliveryService.js');
+const StatusDeliveryService = require('./services/statusDeliveryService.js');
 
 const router = Router();
 
 // Création d'une instance de service pour Delivery
-const dataContext = new ConnectionPool(config);
-const deliveryService = new DeliveryService(dataContext);
+const deliveryService = new DeliveryService();
 const deliveryController = new DeliveryController(deliveryService);
 
 // Création d'une instance de service pour StatusDelivery
-const statusDeliveryService = new StatusDeliveryService(dataContext);
+const statusDeliveryService = new StatusDeliveryService();
 const statusDeliveryController = new StatusDeliveryController(statusDeliveryService);
 
 // Routes pour Delivery
@@ -27,5 +24,9 @@ router.delete('/deliveries/:id', deliveryController.deleteDelivery.bind(delivery
 
 // Routes pour StatusDelivery
 router.get('/statusDeliveries', statusDeliveryController.getAllStatusDeliveries.bind(statusDeliveryController));
+router.get('/statusDeliveries/:id', statusDeliveryController.getStatusDeliveryById.bind(StatusDeliveryController));
+router.post('/statusDeliveries', statusDeliveryController.createStatusDelivery.bind(statusDeliveryController));
+router.put('/statusDeliveries/:id', statusDeliveryController.updateStatusDelivery.bind(statusDeliveryController));
+router.delete('/statusDeliveries/:id', statusDeliveryController.deleteStatusDelivery.bind(statusDeliveryController));
 
-export default router;
+module.exports = router;

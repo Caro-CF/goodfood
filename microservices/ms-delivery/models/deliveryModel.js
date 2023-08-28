@@ -1,11 +1,19 @@
-// models/deliveryModel.js
-class Delivery {
-  constructor(id, orderId, statusId, photo) {
-    this.id = id;
-    this.orderId = orderId;
-    this.statusId = statusId;
-    this.photo = photo;
-  }
-}
+const mongoose = require("mongoose");
 
-export default Delivery;
+const deliverySchema = new mongoose.Schema({
+  id_order: {
+    type: Number,
+    required: true
+  },
+  id_status: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'StatusDelivery',
+    required: true
+  },
+  photo: {
+    type: String
+  }
+});
+
+const Delivery = mongoose.model("Delivery", deliverySchema);
+module.exports = Delivery;

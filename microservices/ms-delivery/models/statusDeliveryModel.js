@@ -1,9 +1,14 @@
-// models/statusDeliveryModel.js
-class StatusDelivery {
-  constructor(id, libelle) {
-    this.id = id;
-    this.libelle = libelle;
-  }
-}
+const mongoose = require("mongoose");
 
-export default StatusDelivery;
+const statusDeliverySchema = new mongoose.Schema({
+  id: {
+    type: Number
+  },
+  libelle: {
+    type: String,
+    required: true
+  }
+});
+
+const StatusDelivery = mongoose.model("StatusDelivery", statusDeliverySchema);
+module.exports = StatusDelivery;

@@ -1,0 +1,29 @@
+version: "3"
+services:
+  livraison:
+    image: ms-delivery:latest
+    container_name: ms-delivery
+    restart: always
+    depends_on:
+      - db-livraison
+    ports:
+      - "3000:3000"
+    networks:
+      - livraison-network
+  db-livraison:
+    image: db-delivery:v3
+    container_name: db-delivery
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=CGA
+      - MONGO_INITDB_ROOT_PASSWORD=MAALSICESI2024
+      - MONGO_INITDB_DATABASE=delivery
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db-delivery:/data/db
+    networks:
+      - livraison-network
+
+networks:
+  livraison-network:

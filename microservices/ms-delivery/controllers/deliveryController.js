@@ -73,4 +73,4 @@ class DeliveryController {
   }
 }
 
-export default DeliveryController;
+module.exports = DeliveryController;
