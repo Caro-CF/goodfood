@@ -19,7 +19,7 @@ namespace ms_gestionstock.Controllers
         public IActionResult GetAllStock()
         {
             var stock = _stockService.GetAllStock();
-            return Ok(JsonContent(stock));
+            return JsonContent(stock);
         }
 
         [HttpGet("{idRestaurant}/{idIngredient}")]
@@ -30,14 +30,14 @@ namespace ms_gestionstock.Controllers
             {
                 return NotFound();
             }
-            return Ok(JsonContent(stock));
+            return JsonContent(stock);
         }
 
         [HttpGet("restaurant/{idRestaurant}")]
         public IActionResult GetStockByRestaurant(int idRestaurant)
         {
             var stock = _stockService.GetStockByRestaurant(idRestaurant);
-            return Ok(JsonContent(stock));
+            return JsonContent(stock);
         }
 
         [HttpPost]
@@ -51,7 +51,7 @@ namespace ms_gestionstock.Controllers
         public IActionResult UpdateStock(Stock stock)
         {
             _stockService.UpdateStock(stock);
-            return Ok(JsonContent(stock));
+            return JsonContent(stock);
         }
 
         [HttpDelete("{idRestaurant}/{idIngredient}")]
