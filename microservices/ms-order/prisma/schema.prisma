@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id                      Int      @id @default(autoincrement())
+  id_user                 Int      @db.Int
+  created_at              DateTime @default(now()) @db.DateTime
+  id_status               Int      @default(1) @db.Int
+  address                 String   @db.NVarChar(100)
+  city                    String   @db.NVarChar(50)
+  zip_code                String   @db.NVarChar(5)
+  additional_informations String?  @db.NVarChar(50)
+  date_order              DateTime @default(now()) @db.DateTime
+  id_delivery             Int?     @db.Int
+  id_restaurant           Int      @db.Int
+
+  status StatusOrder @relation(fields: [id_status], references: [id])
+}
+
+model StatusOrder {
+  id      Int    @id @default(autoincrement())
+  libelle String @db.NVarChar(50)
+
+  orders Order[]
+}
