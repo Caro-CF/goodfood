@@ -11,6 +11,7 @@ namespace Data
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<RestaurantTag> RestaurantTags { get; set; }
+        public DbSet<FranchiseProduct> FranchiseProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -18,6 +18,10 @@ builder.Services.AddScoped<IFranchiseService, FranchiseService>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IRestaurantTagService, RestaurantTagService>();
 builder.Services.AddScoped<ITagService, TagService>();
+builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<IFranchiseProductService, FranchiseProductService>();
+
+builder.Services.AddHttpClient();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,9 +32,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 //}
+
+//app.UseSwagger();
+//app.UseSwaggerUI(c =>
+//{
+//    c.SwaggerEndpoint("/swagger.json", "restaurant-franchise");
+//});
 
 app.UseAuthorization();
 
