@@ -9,17 +9,19 @@ namespace Controllers
     public class RestaurantController : BaseController
     {
         private readonly IRestaurantService _restaurantService;
+        private readonly IStockService _stockService;
 
-        public RestaurantController(IRestaurantService restaurantService)
+        public RestaurantController(IRestaurantService restaurantService, IStockService stockService)
         {
             _restaurantService = restaurantService;
+            _stockService = stockService;
         }
 
         [HttpGet]
         public IActionResult GetAllRestaurants()
         {
             var restaurants = _restaurantService.GetAllRestaurants();
-            return Ok(JsonContent(restaurants));
+            return JsonContent(restaurants);
         }
 
         [HttpGet("{id}")]
@@ -30,7 +32,7 @@ namespace Controllers
             {
                 return NotFound();
             }
-            return Ok(JsonContent(restaurant));
+            return JsonContent(restaurant);
         }
 
         [HttpPost]
@@ -56,6 +58,13 @@ namespace Controllers
         {
             _restaurantService.DeleteRestaurant(id);
             return NoContent();
+        }
+
+        [HttpGet("stock/{restaurantId}")]
+        public async Task<IActionResult> GetStockInfo(int restaurantId)
+        {
+            var stockInfo = await _stockService.GetStockAsync(restaurantId);
+            return JsonContent(stockInfo);
         }
     }
 }
