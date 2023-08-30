@@ -1,0 +1,172 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik:v2.4
+    container_name: traefik
+    restart: always
+    ports:
+      - "80:80"
+      - "8081:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+    networks:
+      - microservices
+
+  db-restaurant-franchise:
+    image: db-restaurant-franchise:latest
+    container_name: db-restaurant-franchise
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=M@@LSIC€SI2024
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./data-restaurant-franchise:/var/opt/mssql/data
+      - ./backup-restaurant-franchise:/var/opt/mssql/backup
+    networks:
+      - microservices
+
+  restaurant-franchise:
+    image: ms-restaurant-franchise:latest
+    container_name: ms-restaurant-franchise
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.restaurant-franchise.rule=Host(`restaurant-franchise.com`)"
+      - "traefik.http.services.restaurant-franchise.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.restaurant-franchise-swagger.redirectregex.regex=^http://restaurant-franchise\\.com/swagger"
+      - "traefik.http.middlewares.restaurant-franchise-swagger.redirectregex.replacement=/swagger/index.html"
+      - "traefik.http.middlewares.restaurant-franchise-swagger.redirectregex.permanent=true"
+    networks:
+      - microservices
+    depends_on:
+      - db-restaurant-franchise
+
+  db-gestion-stock:
+    image: db-gestion-stock:v2
+    container_name: db-gestion-stock
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=M@@LSIC€SI2024
+    ports:
+      - "1433"
+    volumes:
+      - ./data-gestion-stock:/var/opt/mssql/data
+      - ./backup-gestion-stock:/var/opt/mssql/backup
+    networks:
+      - microservices
+
+  gestion-stock:
+    image: ms-gestion-stock:latest
+    container_name: ms-gestion-stock
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gestion-stock.rule=Host(`gestion-stock.com`)"
+      - "traefik.http.services.gestion-stock.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.gestion-stock-swagger.redirectregex.regex=^http://gestion-stock\\.com/swagger"
+      - "traefik.http.middlewares.gestion-stock-swagger.redirectregex.replacement=/swagger/index.html"
+      - "traefik.http.middlewares.gestion-stock-swagger.redirectregex.permanent=true"
+    networks:
+      - microservices
+    ports:
+      - "5100:80"
+    depends_on:
+      - db-gestion-stock
+
+  db-livraison:
+    image: db-delivery:v3
+    container_name: db-livraison
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=CGA
+      - MONGO_INITDB_ROOT_PASSWORD=MAALSICESI2024
+      - MONGO_INITDB_DATABASE=delivery
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db-livraison:/data/db
+    networks:
+      - microservices
+
+  livraison:
+    image: ms-delivery:latest
+    container_name: ms-livraison
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.livraison.rule=Host(`livraison.com`)"
+      - "traefik.http.services.livraison.loadbalancer.server.port=3000"
+    networks:
+      - microservices
+    depends_on:
+      - db-livraison
+
+  db-catalogue:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: db-catalogue
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssword2023
+    ports:
+      - "15433:1433"
+    volumes:
+      - ./data-catalogue:/var/opt/mssql/data
+      - ./backup-catalogue:/var/opt/mssql/backup
+    networks:
+      - microservices
+
+  catalogue:
+    image: ms-catalogue:latest
+    container_name: ms-catalogue
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.catalogue.rule=Host(`catalog.com`)"
+      - "traefik.http.services.catalogue.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.catalogue-swagger.redirectregex.regex=^http://catalog\\.com/swagger"
+      - "traefik.http.middlewares.catalogue-stock-swagger.redirectregex.replacement=/swagger/index.html"
+      - "traefik.http.middlewares.catalogue-stock-swagger.redirectregex.permanent=true"
+    networks:
+      - microservices
+    depends_on:
+      - db-catalogue
+
+  db-authentification:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: db-authentification
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=M@@LSICESI2024
+    ports:
+      - "14433:1433"
+    volumes:
+      - ./data-authentification:/var/opt/mssql/data
+      - ./backup-authentification:/var/opt/mssql/backup
+    networks:
+      - microservices
+
+  authentification:
+    image: ms-authentification:latest
+    container_name: ms-authentification
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.authentification.rule=Host(`authent.com`)"
+      - "traefik.http.services.authentification.loadbalancer.server.port=5000"
+      - "traefik.http.middlewares.authentification-swagger.redirectregex.regex=^http://authent\\.com/swagger"
+      - "traefik.http.middlewares.authentification-swagger.redirectregex.replacement=/swagger/index.html"
+      - "traefik.http.middlewares.authentification-swagger.redirectregex.permanent=true"
+    networks:
+      - microservices
+    depends_on:
+      - db-authentification
+
+networks:
+  microservices:

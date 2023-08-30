@@ -1,0 +1,17 @@
+# traefik.toml
+[entryPoints]
+[entryPoints.web]
+address = ":80"
+
+[entryPoints.livraison]
+address = ":3000"
+
+[entryPoints.auth]
+address = ":5000"
+
+[api]
+insecure = true
+
+[providers.docker]
+endpoint = "unix:///var/run/docker.sock"
+exposedByDefault = false
