@@ -1,21 +1,30 @@
-import express, { json } from 'express';
-import pkg from 'mssql';
-const { connect } = pkg;
-import routes from './routes.js';
-import config from './dbConfig.js';
+const express = require('express');
+const mongoose = require('mongoose');
+const routes = require('./routes.js');
+const bodyParser = require('body-parser');
+
+require('dotenv').config();
 
 const app = express();
-
-app.use(json());
+const PORT = 3000;
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Utilisation des routes
 app.use('/', routes);
 
+const DB_HOST = process.env.DB_HOST;
+const DB_PORT = process.env.DB_PORT;
+const DB_NAME = process.env.DB_NAME;
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
 // Démarrer le serveur
-connect(config).then(() => {
-  app.listen(3000, () => {
-    console.log('Le serveur est en cours d\'exécution sur le port 3000.');
-  });
-}).catch(err => {
-  console.error('Erreur lors de la connexion à la base de données:', err);
+const connectionString = `mongodb://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+
+app.listen(PORT, function(){
+    console.log(`Listening on ${PORT}`);
+    mongoose.connect(connectionString)
+    .then(() => {
+        console.log("MongoDB connected");
+    });
 });

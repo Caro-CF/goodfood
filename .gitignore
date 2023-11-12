@@ -802,3 +802,7 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,visualstudio,react,flutter,go,terraform,reactnative
 microservices/ms-restaurantfranchise/.dockerignore
+microservices/ms-delivery/db-delivery/.mongodb
+microservices/ms-delivery/package.json
+microservices/ms-delivery/package-lock.json
+microservices/ms-delivery/db-delivery

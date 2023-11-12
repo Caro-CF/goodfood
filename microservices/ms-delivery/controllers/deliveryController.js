@@ -9,68 +9,65 @@ class DeliveryController {
     try {
       const deliveries = await this.deliveryService.getAllDeliveries();
       res.json(deliveries);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la récupération des livraisons."});
     }
   }
 
   async getDeliveryById(req, res) {
     try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       const delivery = await this.deliveryService.getDeliveryById(id);
-
+      if(!delivery){
+        res.status(500).json({erreur: "Livraison non trouvée."});
+      };
       res.json(delivery);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la récupération de la livraison."});
     }
   }
 
   async createNewDelivery(req, res) {
     try {
-      const { orderId, statusId, photo } = req.body;
-      await this.deliveryService.createNewDelivery(orderId, statusId, photo);
-      res.status(201).send('Livraison créée avec succès');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
+      const { statusId, photo } = req.body;
+      await this.deliveryService.createNewDelivery(statusId, photo);
+      res.status(201).json({message: "Livraison créée avec succès."});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la création de la livraison."});
     }
   }
 
   async updateDelivery(req, res) {
     try {
-      const id = parseInt(req.params.id);
-      const { orderId, statusId, photo } = req.body;
-
-      await this.deliveryService.updateDelivery(id, orderId, statusId, photo);
-      res.send('Livraison mise à jour avec succès');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
+      const id = req.params.id;
+      const { statusId, photo } = req.body;
+      const updatedDelivery = await this.deliveryService.updateDelivery(id, statusId, photo);
+      if(!updatedDelivery){
+        res.status(500).json({erreur:"Livraison non trouvée."})
+      }
+      res.json({message: "Livraison mise à jour avec succès."});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la mise à jour de la livraison."});
     }
   }
 
   async deleteDelivery(req, res) {
     try {
-      const id = parseInt(req.params.id);
-      await this.deliveryService.deleteDelivery(id);
-      res.send('Livraison supprimée avec succès');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
+      const id = req.params.id;
+      const deletedDelivery = await this.deliveryService.deleteDelivery(id);
+      if(!deletedDelivery){
+        res.status(500).json({erreur: "Livraison non trouvée."})
+      }
+      res.json({message: "Livraison supprimée avec succès."});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la suppression de la livraison."});
     }
-  }
-
-  async getAllStatusDeliveries(req, res) {
-    try {
-      const statusDeliveries = await this.deliveryService.getAllStatusDeliveries();
-      res.json(statusDeliveries);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
-    }
-  }
+  }  
 }
 
-export default DeliveryController;
+module.exports = DeliveryController;
