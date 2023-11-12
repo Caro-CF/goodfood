@@ -10,9 +10,52 @@ class StatusDeliveryController {
     try {
       const statusDeliveries = await this.statusDeliveryService.getAllStatusDeliveries();
       res.json(statusDeliveries);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Erreur serveur');
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la récupération des statuts."});
+    }
+  }
+
+  async getStatusDeliveryById(req, res) {
+    try {
+      const id = req.params.id;
+      await this.statusDeliveryService.getStatusDeliveryById(id);
+      res.json(statusDelivery);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la récupération du statut."});
+    }
+  }
+
+  async createStatusDelivery(req, res) {
+    try {
+      const { libelle } = req.body;
+      await this.statusDeliveryService.createStatusDelivery(libelle);
+      res.status(201).json({message: "Statut créé avec succès."});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({erreur: "Erreur lors de la création du statut."});
+    }
+  }
+
+  async updateStatusDelivery(req, res) {
+    try {
+      const { id } = req.params.id;
+      const { libelle } = req.body;
+      await this.statusDeliveryService.updateStatusDelivery(id, libelle);
+      res.json({message: "Statut mis à jour avec succès."});
+    } catch (error) {
+      res.status(500).json({erreur: "Erreur lors de la mise à jour du statut."});
+    }
+  }
+
+  async deleteStatusDelivery(req, res) {
+    try {
+      const { id } = req.params;
+      await statusDeliveryService.deleteStatusDelivery(id);  
+      res.json({message: "Statut supprimé avec succès."});
+    } catch (error) {
+      res.status(500).json({ erreur: "Erreur lors de la suppression du statut." });
     }
   }
 

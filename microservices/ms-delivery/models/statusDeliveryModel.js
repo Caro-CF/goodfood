@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const statusDeliverySchema = new mongoose.Schema({
-  id: {
-    type: Number
-  },
+  // id: {
+  //   type: Number
+  // },
   libelle: {
     type: String,
     required: true

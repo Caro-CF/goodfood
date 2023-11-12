@@ -3,8 +3,7 @@ const Delivery = require("../models/deliveryModel.js");
 class DeliveryService {
   async getAllDeliveries() {
     try {
-      const deliveries = await Delivery.find().exec();
-      return deliveries;
+      return await Delivery.find().exec();
     } catch (err) {
       console.log(err);
       throw new Error('Erreur lors de la récupération des livraisons.');
@@ -13,41 +12,32 @@ class DeliveryService {
 
   async getDeliveryById(id) {
     try {
-      const delivery = await Delivery.findById(id).exec();
-      if (!delivery) {
-        throw new Error('Livraison non trouvée.');
-      }
-      return delivery;
+      return await Delivery.findById(id).exec();
     } catch (err) {
       throw new Error('Erreur lors de la récupération de la livraison.');
     }
   }
 
-  async createNewDelivery(orderId, statusId, photo) {
+  async createNewDelivery(statusId, photo) {
     try {
       const newDelivery = new Delivery({
-        id_order: orderId,
         id_status: statusId,
         photo: photo
       });
-      await newDelivery.save();
+      return await newDelivery.save();
     } catch (err) {
       console.log(err);
       throw new Error('Erreur lors de la création de la livraison.');
     }
   }
 
-  async updateDelivery(id, orderId, statusId, photo) {
+  async updateDelivery(id, statusId, photo) {
     try {
-      const delivery = await Delivery.findByIdAndUpdate(
+      return await Delivery.findByIdAndUpdate(
         id,
-        { id_order: orderId, id_status: statusId, photo: photo },
+        { id_status: statusId, photo: photo },
         { new: true }
       ).exec();
-
-      if (!delivery) {
-        throw new Error('Livraison non trouvée.');
-      }
     } catch (err) {
       throw new Error('Erreur lors de la mise à jour de la livraison.');
     }
@@ -55,10 +45,7 @@ class DeliveryService {
 
   async deleteDelivery(id) {
     try {
-      const delivery = await Delivery.findByIdAndDelete(id).exec();
-      if (!delivery) {
-        throw new Error('Livraison non trouvée.');
-      }
+      return await Delivery.findByIdAndDelete(id).exec();
     } catch (err) {
       throw new Error('Erreur lors de la suppression de la livraison.');
     }

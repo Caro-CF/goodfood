@@ -23,10 +23,10 @@ router.put('/deliveries/:id', deliveryController.updateDelivery.bind(deliveryCon
 router.delete('/deliveries/:id', deliveryController.deleteDelivery.bind(deliveryController));
 
 // Routes pour StatusDelivery
-router.get('/statusDeliveries', statusDeliveryController.getAllStatusDeliveries.bind(statusDeliveryController));
-router.get('/statusDeliveries/:id', statusDeliveryController.getStatusDeliveryById.bind(StatusDeliveryController));
-router.post('/statusDeliveries', statusDeliveryController.createStatusDelivery.bind(statusDeliveryController));
-router.put('/statusDeliveries/:id', statusDeliveryController.updateStatusDelivery.bind(statusDeliveryController));
-router.delete('/statusDeliveries/:id', statusDeliveryController.deleteStatusDelivery.bind(statusDeliveryController));
+router.get('/status-deliveries', statusDeliveryController.getAllStatusDeliveries.bind(statusDeliveryController));
+router.get('/status-deliveries/:id', statusDeliveryController.getStatusDeliveryById.bind(statusDeliveryController));
+router.post('/status-deliveries', statusDeliveryController.createStatusDelivery.bind(statusDeliveryController));
+router.put('/status-deliveries/:id', statusDeliveryController.updateStatusDelivery.bind(statusDeliveryController));
+router.delete('/status-deliveries/:id', statusDeliveryController.deleteStatusDelivery.bind(statusDeliveryController));
 
 module.exports = router;

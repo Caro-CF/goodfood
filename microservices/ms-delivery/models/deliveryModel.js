@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const deliverySchema = new mongoose.Schema({
-  id_order: {
-    type: Number,
-    required: true
-  },
+  // id_order: {
+  //   type: Number,
+  //   required: true
+  // },
   id_status: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'StatusDelivery',

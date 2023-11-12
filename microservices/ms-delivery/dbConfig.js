@@ -1,13 +1,14 @@
 const config = {
-    server: '172.21.0.3',
-    port: 1433,
-    user: 'sa',
-    password: 'M@@LSIC€SI2024',
-    database: 'delivery',
-    options: {
-      trustServerCertificate: true,
-      encrypt: false // Supprimez cette ligne si vous souhaitez utiliser le chiffrement
-    }
-  };
-  
-  export default config;  
+  host: 'localhost',
+  port: 27017,
+  database: 'delivery',
+  user: 'CGA', // Remplacez par votre nom d'utilisateur MongoDB
+  password: 'MAALSICESI2024', // Remplacez par votre mot de passe MongoDB
+  options: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // Autres options de configuration de MongoDB
+  }
+};
+
+export default config;
